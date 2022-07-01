@@ -4,7 +4,7 @@ min_mainnet_k_size: 32
 ping_interval: 120
 self_hostname: &self_hostname "localhost"
 prefer_ipv6: False
-daemon_port: 55400
+daemon_port: 55666
 daemon_max_message_size: 50000000 # maximum size of RPC message in bytes
 inbound_rate_limit_percent: 100
 outbound_rate_limit_percent: 30
@@ -14,8 +14,8 @@ network_overrides: &network_overrides
     mainnet:
       NETWORK_TYPE: 0
       GENESIS_CHALLENGE: ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "d23da14695a188ae5708dd152263c4db883eb27edeb936178d4d988b8f3ce5fc"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "3d8765d3a597ec1d99663f6c9816d915b9f68613ac94009884c4addaefcce6af"
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "46be0d861b7eb23fd0d4f53de52b1ab514dcc031326804bc77a4517da4240963"
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "46be0d861b7eb23fd0d4f53de52b1ab514dcc031326804bc77a4517da4240963"
     testnet0:
       MIN_PLOT_SIZE: 18
       GENESIS_CHALLENGE: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -80,8 +80,8 @@ network_overrides: &network_overrides
       NETWORK_TYPE: 1
   config:
     mainnet:
-      address_prefix: "xch"
-      default_full_node_port: 8444
+      address_prefix: "six"
+      default_full_node_port: 16664
     testnet0:
       address_prefix: "txch"
       default_full_node_port: 58444
@@ -101,7 +101,7 @@ network_overrides: &network_overrides
       default_full_node_port: 58444
 
 selected_network: &selected_network "mainnet"
-ALERTS_URL: https://download.chia.net/notify/mainnet_alert.txt
+ALERTS_URL: https://download.luckysix.top/notify/mainnet_alert.txt
 CHIA_ALERTS_PUBKEY: 89b7fd87cb56e926ecefb879a29aae308be01f31980569f6a75a69d2a9a69daefd71fb778d865f7c50d6c967e3025937
 
 # public ssl ca is included in source code
@@ -124,7 +124,7 @@ daemon_ssl:
 logging: &logging
   log_stdout: False  # If True, outputs to stdout instead of a file
   log_filename: "log/debug.log"
-  log_level: "WARNING"  # Can be CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
+  log_level: "INFO"  # Can be CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
   log_maxfilesrotation: 7 #  Max files in rotation. Default value 7 if the key is not set
   log_maxbytesrotation: 52428800 #  Max bytes logged before rotating logs
   log_syslog: False  # If True, outputs to SysLog host and port specified
@@ -170,14 +170,14 @@ seeder:
 
 harvester:
   # The harvester server (if run) will run on this port
-  port: 8448
+  port: 16668
   farmer_peer:
     host: *self_hostname
-    port: 8447
+    port: 16667
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8560
+  rpc_port: 16660
   num_threads: 30
   plots_refresh_parameter:
     interval_seconds: 120 # The interval in seconds to refresh the plot file manager
@@ -219,14 +219,14 @@ pool:
 
 farmer:
   # The farmer server (if run) will run on this port
-  port: 8447
+  port: 16667
   # The farmer will attempt to connect to this full node and harvester
   full_node_peer:
     host: *self_hostname
-    port: 8444
+    port: 16664
   harvester_peer:
     host: *self_hostname
-    port: 8448
+    port: 16668
 
   pool_public_keys: []
 
@@ -235,7 +235,7 @@ farmer:
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8559
+  rpc_port: 16659
 
   # To send a share to a pool, a proof of space must have required_iters less than this number
   pool_share_threshold: 1000
@@ -253,7 +253,7 @@ farmer:
 timelord_launcher:
   # The server where the VDF clients will connect to.
   host: *self_hostname
-  port: 8000
+  port: 16000
   # Number of VDF client processes to keep alive in the local machine.
   process_count: 3
   logging: *logging
@@ -261,7 +261,7 @@ timelord_launcher:
 
 timelord:
   # The timelord server (if run) will run on this port
-  port: 8446
+  port: 16666
   # Provides a list of VDF clients expected to connect to this timelord.
   # For each client, an IP is provided, together with the estimated iterations per second.
   vdf_clients:
@@ -273,13 +273,13 @@ timelord:
       - 150000
   full_node_peer:
       host: *self_hostname
-      port: 8444
+      port: 16664
   # Maximum number of seconds allowed for a client to reconnect to the server.
   max_connection_time: 60
   # The ip and port where the TCP clients will connect.
   vdf_server:
     host: *self_hostname
-    port: 8000
+    port: 16000
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
@@ -319,7 +319,7 @@ timelord:
 
 full_node:
   # The full node server (if run) will run on this port
-  port: 8444
+  port: 16664
 
   # controls the sync-to-disk behavior of the database connection. Can be one of:
   # "on"    enables syncing to disk, minimizes risk of corrupting the DB in
@@ -352,7 +352,7 @@ full_node:
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8555
+  rpc_port: 16655
 
   # Use UPnP to attempt to allow other full nodes to reach your node behind a gateway
   enable_upnp: True
@@ -415,19 +415,19 @@ full_node:
   # List of trusted DNS seeders to bootstrap from.
   # If you modify this, please change the hardcode as well from FullNode.set_server()
   dns_servers:
-    - "dns-introducer.chia.net"
+    - "dns-introducer.luckysix.top"
   farmer_peer:
       host: *self_hostname
-      port: 8447
+      port: 16667
   timelord_peer:
       host: *self_hostname
-      port: 8446
+      port: 16666
   introducer_peer:
-      host: introducer.chia.net  # Chia AWS introducer IPv4/IPv6
-      port: 8444
+      host: introducer.luckysix.top  # Chia AWS introducer IPv4/IPv6
+      port: 16665
   wallet_peer:
     host: *self_hostname
-    port: 8449
+    port: 16669
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
@@ -440,10 +440,10 @@ full_node:
 
 ui:
    # The ui node server (if run) will run on this port
-  port: 8222
+  port: 16222
 
   # Which port to use to communicate with the full node
-  rpc_port: 8555
+  rpc_port: 16655
 
   # This SSH key is for the ui SSH server
   ssh_filename: config/ssh_host_key
@@ -454,14 +454,14 @@ ui:
   # this is where the electron UI will find its daemon
   # defaults to the one running locally with its private keys
   daemon_host: *self_hostname
-  daemon_port: 55400
+  daemon_port: 55666
   daemon_ssl:
     private_crt: config/ssl/daemon/private_daemon.crt
     private_key: config/ssl/daemon/private_daemon.key
 
 introducer:
   host: *self_hostname
-  port: 8445
+  port: 16665
   max_peers_to_send: 20
   # The introducer will only return peers it has seen in the last
   # recent_peer_threshold seconds
@@ -475,8 +475,8 @@ introducer:
     public_key:  "config/ssl/full_node/public_full_node.key"
 
 wallet:
-  port: 8449
-  rpc_port: 9256
+  port: 16669
+  rpc_port: 16656
 
   enable_profiler: False
 
@@ -497,7 +497,7 @@ wallet:
 
   full_node_peer:
     host: *self_hostname
-    port: 8444
+    port: 16664
 
   multiprocessing_start_method: default
 
@@ -519,8 +519,8 @@ wallet:
   recent_peer_threshold: 6000
 
   introducer_peer:
-    host: introducer.chia.net # Chia AWS introducer IPv4/IPv6
-    port: 8444
+    host: introducer.luckysix.top # Chia AWS introducer IPv4/IPv6
+    port: 16665
 
   ssl:
     private_crt:  "config/ssl/wallet/private_wallet.crt"

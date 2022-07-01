@@ -1,8 +1,35 @@
 from chia.util.ints import uint32, uint64
+import  random
 
 # 1 Chia coin = 1,000,000,000,000 = 1 trillion mojo.
 _mojo_per_chia = 1000000000000
-_blocks_per_year = 1681920  # 32 * 6 * 24 * 365
+_blocks_per_year = 1681920   # 32 * 6 * 24 * 365
+_blocks_per_month = 138240  # 32 * 6 * 24 * 30
+
+def  lucky_reward(height):
+    strs = str(height)
+    n=0
+    last_one=strs[-1:]
+    last_two=strs[-2:]
+    last_three=strs[-3:]
+
+    #if lucky_rand():
+    #    n=999
+    if last_three == '666':
+        n=666
+    elif last_two =='66' :
+        n=66
+    elif last_one == '6':
+        n=6
+    else:
+        n=0
+    return n
+
+def lucky_rand():
+    if random.randint(1,32256)==666:
+        return True
+    else :
+        return False
 
 
 def calculate_pool_reward(height: uint32) -> uint64:
@@ -15,18 +42,21 @@ def calculate_pool_reward(height: uint32) -> uint64:
     """
 
     if height == 0:
-        return uint64(int((7 / 8) * 21000000 * _mojo_per_chia))
+        return uint64(int((1 / 3) * 1 * _mojo_per_chia))
+    elif height==1:
+        return uint64(int((1 / 3) * 666666 * _mojo_per_chia))
+    elif height<1 * _blocks_per_month:
+        return uint64(int((1 / 3) * 18 * _mojo_per_chia))
     elif height < 3 * _blocks_per_year:
-        return uint64(int((7 / 8) * 2 * _mojo_per_chia))
+        return uint64(int((1 / 3) * 6 * _mojo_per_chia))
     elif height < 6 * _blocks_per_year:
-        return uint64(int((7 / 8) * 1 * _mojo_per_chia))
+        return uint64(int((1 / 3) * 3 * _mojo_per_chia))
     elif height < 9 * _blocks_per_year:
-        return uint64(int((7 / 8) * 0.5 * _mojo_per_chia))
+        return uint64(int((1 / 3) * 1.5 * _mojo_per_chia))
     elif height < 12 * _blocks_per_year:
-        return uint64(int((7 / 8) * 0.25 * _mojo_per_chia))
+        return uint64(int((1 / 3) * 0.75 * _mojo_per_chia))
     else:
-        return uint64(int((7 / 8) * 0.125 * _mojo_per_chia))
-
+        return uint64(int((1 / 3) * 0.375 * _mojo_per_chia))
 
 def calculate_base_farmer_reward(height: uint32) -> uint64:
     """
@@ -37,15 +67,23 @@ def calculate_base_farmer_reward(height: uint32) -> uint64:
     (3 years, etc), due to fluctuations in difficulty. They will likely come early, if the network space and VDF
     rates increase continuously.
     """
+    luckycoin=lucky_reward(height)
+
     if height == 0:
-        return uint64(int((1 / 8) * 21000000 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 1 * _mojo_per_chia))
+    elif height==1:
+        return uint64(int((2 / 3) * 666666 * _mojo_per_chia))
+    elif luckycoin != 0:
+        return uint64(int((3 / 3) * luckycoin * _mojo_per_chia))
+    elif height<1 * _blocks_per_month:
+        return uint64(int((2 / 3) * 18 * _mojo_per_chia))
     elif height < 3 * _blocks_per_year:
-        return uint64(int((1 / 8) * 2 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 6 * _mojo_per_chia))
     elif height < 6 * _blocks_per_year:
-        return uint64(int((1 / 8) * 1 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 3 * _mojo_per_chia))
     elif height < 9 * _blocks_per_year:
-        return uint64(int((1 / 8) * 0.5 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 1.5 * _mojo_per_chia))
     elif height < 12 * _blocks_per_year:
-        return uint64(int((1 / 8) * 0.25 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 0.75 * _mojo_per_chia))
     else:
-        return uint64(int((1 / 8) * 0.125 * _mojo_per_chia))
+        return uint64(int((2 / 3) * 0.375 * _mojo_per_chia))

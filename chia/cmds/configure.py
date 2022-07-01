@@ -132,8 +132,8 @@ def configure(
 
             elif testnet == "false" or testnet == "f":
                 print("Setting Mainnet")
-                mainnet_port = "8444"
-                mainnet_introducer = "introducer.chia.net"
+                mainnet_port = "16664"
+                mainnet_introducer = "introducer.luckysix.top"
                 mainnet_dns_introducer = "dns-introducer.chia.net"
                 bootstrap_peers = ["node.chia.net"]
                 net = "mainnet"
